@@ -1,0 +1,13 @@
+redisAddress: redis://redis.robot-shop.svc.cluster.local:6379
+
+service:
+  annotations:
+    prometheus.io/port: "9121"
+    prometheus.io/scrape: "true"
+
+serviceMonitor:
+  enabled: true
+  multipleTarget: true
+  targets:
+  - url: redis://redis.robot-shop.svc.cluster.local:6379
+    name: redis.robot-shop.svc.cluster.local:6379
