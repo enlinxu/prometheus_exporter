@@ -56,7 +56,7 @@ chmod +x mysql_annotation_ns.sh
 ## FAQ
 
 ### Q: I see failed to connect to the database in the mysql exporter pod log.
-Answer: The logs indicate that the shipping MySQL user doesn't have sufficient privileges to access certain metrics. To resolve these errors, you'll need to grant additional privileges to this user.
+The logs indicate that the shipping MySQL user doesn't have sufficient privileges to access certain metrics. To resolve these errors, you'll need to grant additional privileges to this user.
 However, granting additional privileges should be done cautiously, especially in a production environment. Make sure to understand the implications and test any changes in a non-production environment first.
 
 To fix it for the demo app only.
@@ -74,9 +74,9 @@ After granting the privileges using the root account, the shipping user should h
 
 
 ### Q: Now I don't see the errors in the exporter log, but I still don't see the mysql-exporter target in the prometheus Target configuration
-Answer: ServiceMonitor Verification: Ensure that your Prometheus setup is set to watch the robot-shop namespace for ServiceMonitor resources. Depending on your setup, this might be set in a Prometheus custom resource or directly in the Prometheus configuration. 
+ServiceMonitor Verification: Ensure that your Prometheus setup is set to watch the robot-shop namespace for ServiceMonitor resources. Depending on your setup, this might be set in a Prometheus custom resource or directly in the Prometheus configuration. 
 
-Make sure your prometheus instance has the following sample setup:
+Make sure your prometheus instance has something like the following, with robot-shop in serviceMonitorNamespaceSelector:
 ```
   serviceMonitorNamespaceSelector:
     matchExpressions:
@@ -88,12 +88,12 @@ Make sure your prometheus instance has the following sample setup:
 ```
 
 ### Q: Now I see it appears in the Target and being scrapped. But I don't see the extra server label
-Answer: Annotation Presence: Ensure that the annotation (mysqlservicename) exists on the MySQL exporter pod in your local environment, just as it does in your other environment. You can verify this using:
+1. Annotation Presence: Ensure that the annotation (mysqlservicename) exists on the MySQL exporter pod in your local environment, just as it does in your other environment. You can verify this using:
 ```
 kubectl get pod <exporter-pod-name> -n <namespace> -o=jsonpath='{.metadata.annotations.mysqlservicename}'
 ```
 
-Correct Relabeling Configuration: Ensure that the ServiceMonitor has the correct relabeling configuration for the annotation in your local environment. It should look something like this:
+2. Correct Relabeling Configuration: Ensure that the ServiceMonitor has the correct relabeling configuration for the annotation in your local environment. It should look something like this:
 ```
 relabelings:
 - action: replace
@@ -102,7 +102,7 @@ relabelings:
   targetLabel: server
 ```
 
-Prometheus Configuration: Ensure that Prometheus is actually using the correct ServiceMonitor and hasn't cached an older version. You can view the generated Prometheus configuration by accessing the Prometheus UI, then clicking on "Status" and selecting "Configuration". This will show the runtime configuration that Prometheus is using. Look for the job corresponding to your MySQL exporter and verify that the relabeling rules are present.
+3. Prometheus Configuration: Ensure that Prometheus is actually using the correct ServiceMonitor and hasn't cached an older version. You can view the generated Prometheus configuration by accessing the Prometheus UI, then clicking on "Status" and selecting "Configuration". This will show the runtime configuration that Prometheus is using. Look for the job corresponding to your MySQL exporter and verify that the relabeling rules are present.
 
-Prometheus Reload: Sometimes, a configuration change might not be picked up immediately. You can try reloading Prometheus by sending a SIGHUP signal to the Prometheus process. If you're running Prometheus inside Kubernetes, you can also try restarting the Prometheus pod.
+4. Prometheus Reload: Sometimes, a configuration change might not be picked up immediately. You can try reloading Prometheus by sending a SIGHUP signal to the Prometheus process. If you're running Prometheus inside Kubernetes, you can also try restarting the Prometheus pod.
 
