@@ -1,0 +1,22 @@
+service:
+  port: 9104
+  annotations:
+    prometheus.io/port: "9104"
+    prometheus.io/scrape: "true"
+
+mysql:
+  host: mysql  # Assuming that the MySQL service name is "mysql". Update if different.
+  user: "shipping"
+  pass: "secret"
+  db: "cities"
+  port: 3306
+
+serviceMonitor:
+  enabled: true
+  # If your Prometheus is looking for a specific label, you might need to specify it. For example:
+  # labels:
+  #   release: prometheus
+  # Adjust accordingly based on your Prometheus setup.
+  relabelings:
+    - sourceLabels: [__meta_kubernetes_pod_annotation_mysqlservicename]
+      targetLabel: server
