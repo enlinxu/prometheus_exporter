@@ -106,3 +106,9 @@ relabelings:
 
 4. Prometheus Reload: Sometimes, a configuration change might not be picked up immediately. You can try reloading Prometheus by sending a SIGHUP signal to the Prometheus process. If you're running Prometheus inside Kubernetes, you can also try restarting the Prometheus pod.
 
+## Sample output from prometheus 
+mysql_global_variables_max_connections (server label is populated from the relabeling in prometheus_mysql_robotshop_values.yaml)
+
+```
+mysql_global_variables_max_connections{container="prometheus-mysql-exporter", endpoint="mysql-exporter", instance="10.244.1.96:9104", job="prometheus-mysql-exporter", namespace="robot-shop", pod="prometheus-mysql-exporter-554b757df8-b2ls8", server="mysql.robot-shop.svc.cluster.local:3306", service="prometheus-mysql-exporter"}
+```
