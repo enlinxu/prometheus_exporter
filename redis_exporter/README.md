@@ -1,5 +1,5 @@
 # redis_exporter
-The following instruction contains setting up a redis prometheus exporter and monitor the mysql performance for the robot-shop demo app.
+The following instruction contains setting up a redis prometheus exporter and monitor the redis performance for the robot-shop demo app.
 
 
 ## Setup with Helm
