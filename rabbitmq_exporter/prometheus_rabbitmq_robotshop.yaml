@@ -1,0 +1,16 @@
+annotations:
+  prometheus.io/port: "9419"
+  prometheus.io/scrape: "true"
+
+rabbitmq:
+  url: http://rabbitmq:15672
+  user: guest
+  password: guest
+
+prometheus:
+  monitor:
+    enabled: true
+    additionalLabels:
+      rabbitmqservicename: rabbitmq.robot-shop.svc.cluster.local
+    interval: 15s
+    namespace: []

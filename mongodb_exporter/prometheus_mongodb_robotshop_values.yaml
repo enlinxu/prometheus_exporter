@@ -1,0 +1,16 @@
+# values.yaml for mongodb-exporter
+
+nameOverride: "mongodb-exporter"
+fullnameOverride: "prometheus-mongodb-exporter"
+
+mongodb:
+  uri: "mongodb://user:password@mongodb:27017/users?tls=true&ssl=true"
+
+serviceMonitor:
+  enabled: true
+  namespace: robot-shop
+  interval: 30s
+  scrapeTimeout: 10s
+  # Add other ServiceMonitor configurations if needed
+
+# Other configurations specific to the MongoDB exporter or your environment
